@@ -1,0 +1,37 @@
+
+import React from 'react'
+import "./Login.css"
+import {Button} from "@material-ui/core"
+import {auth,provider} from "./firebase"
+import { useStateValue } from './StateProvider'
+import { actionTypes } from './reducer'
+function Login() {
+    const [state, dispatch]=useStateValue()
+    const signIn = (e) =>{
+        auth.signInWithPopup(provider)
+        .then(result=>{
+            console.log(result)
+            dispatch({
+                type:actionTypes.SET_USER,
+                user:result.user
+            })
+        })
+        .catch((error) => {
+            alert(error.message)
+        })
+    }
+    return (
+        <div className="login">
+            <div className="login__container">
+           <img
+           src="data:image/jpeg;base64,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"
+           />
+           <h1>Sign to Clever Programmer</h1>
+           <p>Sign in .com</p>
+           <Button onClick={signIn}>Sign In with google</Button>
+           </div>
+        </div>
+    )
+}
+
+export default Login
